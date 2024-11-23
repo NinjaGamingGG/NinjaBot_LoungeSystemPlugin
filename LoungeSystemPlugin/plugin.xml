@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PluginInfo>
+  <PluginName>LoungeSystem Plugin</PluginName>
+  <EnvironmentVariablePrefix>lounge_system-plugin</EnvironmentVariablePrefix>
+  <Description>Simple Discord LoungeSystem Plugin</Description>
+  <PluginVersion>1.0</PluginVersion>
+</PluginInfo>
