@@ -18,7 +18,7 @@ public static class InterfaceMessageBuilder
     {
        return new DiscordMessageBuilder()
                 .WithContent(messageContent)
-                .AddComponents([
+                .AddActionRowComponent([
                     new DiscordButtonComponent(DiscordButtonStyle.Secondary, CustomComponentIdHelper.LoungeInterface.Buttons.RenameButtonId,
                           "Rename",false, new DiscordComponentEmoji( DiscordEmoji.FromName(client, ":black_nib:"))),
                     new DiscordButtonComponent(DiscordButtonStyle.Secondary, CustomComponentIdHelper.LoungeInterface.Buttons.ResizeButtonId,
@@ -26,7 +26,7 @@ public static class InterfaceMessageBuilder
                     new DiscordButtonComponent(DiscordButtonStyle.Secondary, CustomComponentIdHelper.LoungeInterface.Buttons.TrustButtonId,
                         "Trust", false, new DiscordComponentEmoji(DiscordEmoji.FromName(client, ":people_hugging:")))
                 ])
-                .AddComponents([
+                .AddActionRowComponent([
                     new DiscordButtonComponent(DiscordButtonStyle.Secondary, CustomComponentIdHelper.LoungeInterface.Buttons.ClaimButtonId,
                         "Claim", false, new DiscordComponentEmoji(DiscordEmoji.FromName(client, ":triangular_flag_on_post:"))),
                     new DiscordButtonComponent(DiscordButtonStyle.Secondary, CustomComponentIdHelper.LoungeInterface.Buttons.KickButtonId,
@@ -34,7 +34,7 @@ public static class InterfaceMessageBuilder
                     new DiscordButtonComponent(DiscordButtonStyle.Secondary, CustomComponentIdHelper.LoungeInterface.Buttons.UnTrustButtonId,
                         "Un-Trust", false, new DiscordComponentEmoji(DiscordEmoji.FromName(client, ":bust_in_silhouette:")))
                 ])
-                .AddComponents([
+                .AddActionRowComponent([
                     new DiscordButtonComponent(DiscordButtonStyle.Danger, CustomComponentIdHelper.LoungeInterface.Buttons.LockButtonId,
                         "Un/Lock", false, new DiscordComponentEmoji(DiscordEmoji.FromName(client, ":lock:"))),
                     new DiscordButtonComponent(DiscordButtonStyle.Danger, CustomComponentIdHelper.LoungeInterface.Buttons.BanButtonId,
