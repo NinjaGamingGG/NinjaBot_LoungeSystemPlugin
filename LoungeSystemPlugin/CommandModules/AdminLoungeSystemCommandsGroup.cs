@@ -25,7 +25,7 @@ public static class AdminLoungeSystemCommandsGroup
             return;
         }
         await context.DeferResponseAsync();
-        if (!context.Member.Permissions.HasPermission(DiscordPermissions.Administrator))
+        if (!context.Member.Permissions.HasPermission(DiscordPermission.Administrator))
         {
             await context.DeferResponseAsync();
             Log.Debug("User {userName} doesnt hast Permission for '/lounge setup' command", context.Member.Username);
@@ -68,7 +68,7 @@ public static class AdminLoungeSystemCommandsGroup
             return;
         }
 
-        if (!context.Member.Permissions.HasPermission(DiscordPermissions.Administrator))
+        if (!context.Member.Permissions.HasPermission(DiscordPermission.Administrator))
         {
             Log.Debug("User {userName} doesnt hast Permission for '/lounge config' command", context.Member.Username);
             await context.RespondAsync(UIMessageBuilders.NoPermissionMessageBuilder);
