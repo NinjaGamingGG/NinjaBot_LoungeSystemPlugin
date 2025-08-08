@@ -77,7 +77,7 @@ public static class LoungeKickButton
         
         var dropdown = new DiscordSelectComponent(CustomComponentIdHelper.LoungeInterface.KickDropdownId, "Please select an user", sortedList);
 
-        var followUpMessageBuilder = new DiscordFollowupMessageBuilder().WithContent("Please select an user below").AddComponents(dropdown);
+        var followUpMessageBuilder = new DiscordFollowupMessageBuilder().WithContent("Please select an user below").AddActionRowComponent(dropdown);
         
         await ThrowAwayFollowupMessage.HandleAsync(followUpMessageBuilder, eventArgs.Interaction);
     }

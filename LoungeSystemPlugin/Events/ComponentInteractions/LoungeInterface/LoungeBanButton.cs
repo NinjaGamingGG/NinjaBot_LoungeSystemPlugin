@@ -35,7 +35,7 @@ public static class LoungeBanButton
         
         var dropdown = new DiscordSelectComponent(CustomComponentIdHelper.LoungeInterface.BanDropdownId, "Please select an user to ban (from channel)", sortedList);
 
-        var followUpMessageBuilder = new DiscordFollowupMessageBuilder().WithContent("Please select an user below").AddComponents(dropdown);
+        var followUpMessageBuilder = new DiscordFollowupMessageBuilder().WithContent("Please select an user below").AddActionRowComponent(dropdown);
         
         await ThrowAwayFollowupMessage.HandleAsync(followUpMessageBuilder, eventArgs.Interaction);
     }
@@ -78,19 +78,30 @@ public static class LoungeBanButton
         {
             if (overwrite.Type == DiscordOverwriteType.Member && selectedUsersAsDiscordMember.Contains(await overwrite.GetMemberAsync()))
                 continue;
-            
+
             if (overwrite.Type == DiscordOverwriteType.Member)
-                overwriteBuilderList.Add(await new DiscordOverwriteBuilder(await overwrite.GetMemberAsync()).FromAsync(overwrite));
+            {
+                var overwriteDiscordMember = await overwrite.GetMemberAsync();
+                overwriteBuilderList.Add( 
+                    new DiscordOverwriteBuilder(overwriteDiscordMember)
+                    .Allow(overwrite.Allowed)
+                    .Deny(overwrite.Denied));
+            }
+
+            if (overwrite.Type != DiscordOverwriteType.Role) continue;
             
-            if (overwrite.Type == DiscordOverwriteType.Role)
-                overwriteBuilderList.Add(await new DiscordOverwriteBuilder(await overwrite.GetRoleAsync()).FromAsync(overwrite));
+            var overwriteDiscordRole = await overwrite.GetRoleAsync();
+            overwriteBuilderList.Add( 
+                new DiscordOverwriteBuilder(overwriteDiscordRole)
+                    .Allow(overwrite.Allowed)
+                    .Deny(overwrite.Denied));
         }
 
-        overwriteBuilderList.AddRange(selectedUsersAsDiscordMember.Select(member => new DiscordOverwriteBuilder(member).Allow(DiscordPermissions.AccessChannels)
-            .Deny(DiscordPermissions.SendMessages)
-            .Deny(DiscordPermissions.UseVoice)
-            .Deny(DiscordPermissions.Speak)
-            .Deny(DiscordPermissions.Stream)));
+        overwriteBuilderList.AddRange(selectedUsersAsDiscordMember.Select(member => new DiscordOverwriteBuilder(member).Allow(DiscordPermission.ViewChannel)
+            .Deny(DiscordPermission.SendMessages)
+            .Deny(DiscordPermission.Connect)
+            .Deny(DiscordPermission.Speak)
+            .Deny(DiscordPermission.Stream)));
         
         await targetChannel.ModifyAsync(x => x.PermissionOverwrites = overwriteBuilderList);
         
