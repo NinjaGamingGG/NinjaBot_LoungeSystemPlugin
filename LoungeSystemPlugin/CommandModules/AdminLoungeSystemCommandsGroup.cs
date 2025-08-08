@@ -112,7 +112,7 @@ public static class AdminLoungeSystemCommandsGroup
         List<DiscordEmbed> embedList = [];
         List<DiscordSelectComponentOption> selectComponentOptions = [];
         
-        //print list as message back to user
+        //print the list as a message back to the user
         foreach (var record in foundRecordsList)
         {
             var targetChannel = await context.Guild.GetChannelAsync(record.TargetChannelId);
