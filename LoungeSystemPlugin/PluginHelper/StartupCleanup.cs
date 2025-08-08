@@ -85,13 +85,14 @@ public static class StartupCleanup
 
             await foreach (var member in allGuildUsers)
             {
-                if (ReferenceEquals(member.VoiceState?.Channel, null))
+                var memberChannel = await member.VoiceState.GetChannelAsync();
+                if (ReferenceEquals(memberChannel, null))
                     continue;
 
-                if (member.VoiceState.Channel.Id != guildConfig.TargetChannelId)
+                if (memberChannel.Id != guildConfig.TargetChannelId)
                     continue;
 
-                await NewLoungeHelper.CreateNewLounge(guild, member.VoiceState.Channel, member);
+                await NewLoungeHelper.CreateNewLounge(guild, memberChannel, member);
 
             }
         }
