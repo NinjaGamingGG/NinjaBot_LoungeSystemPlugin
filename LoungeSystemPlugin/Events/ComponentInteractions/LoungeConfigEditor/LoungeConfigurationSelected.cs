@@ -16,7 +16,7 @@ public static class LoungeConfigurationSelected
 {
     internal static async Task ChannelSelectionMade(ComponentInteractionCreatedEventArgs eventArgs, DiscordMember invokingMember)
     {
-        if (!invokingMember.Permissions.HasPermission(DiscordPermissions.Administrator))
+        if (!invokingMember.Permissions.HasPermission(DiscordPermission.Administrator))
         {
             await eventArgs.Interaction.CreateResponseAsync(DiscordInteractionResponseType.ChannelMessageWithSource,new DiscordInteractionResponseBuilder().WithContent("You do not have permission to do this."));
             return;
@@ -59,7 +59,7 @@ public static class LoungeConfigurationSelected
 
     internal static async Task DeleteButton(ComponentInteractionCreatedEventArgs eventArgs, DiscordMember invokingMember)
     {
-        if (!invokingMember.Permissions.HasPermission(DiscordPermissions.Administrator))
+        if (!invokingMember.Permissions.HasPermission(DiscordPermission.Administrator))
         {
             await eventArgs.Interaction.CreateResponseAsync(DiscordInteractionResponseType.ChannelMessageWithSource,new DiscordInteractionResponseBuilder().WithContent("You do not have permission to do this."));
             return;
@@ -199,7 +199,7 @@ public static class LoungeConfigurationSelected
     
     internal static async Task ResetNamePatternButton(ComponentInteractionCreatedEventArgs eventArgs, DiscordMember invokingMember)
     {
-        if (!invokingMember.Permissions.HasPermission(DiscordPermissions.Administrator))
+        if (!invokingMember.Permissions.HasPermission(DiscordPermission.Administrator))
         {
             await eventArgs.Interaction.CreateResponseAsync(DiscordInteractionResponseType.ChannelMessageWithSource,new DiscordInteractionResponseBuilder().WithContent("You do not have permission to do this."));
             return;
@@ -211,7 +211,7 @@ public static class LoungeConfigurationSelected
     
     internal static async Task ResetInterfaceButton(ComponentInteractionCreatedEventArgs eventArgs, DiscordMember invokingMember)
     {
-        if (!invokingMember.Permissions.HasPermission(DiscordPermissions.Administrator))
+        if (!invokingMember.Permissions.HasPermission(DiscordPermission.Administrator))
         {
             await eventArgs.Interaction.CreateResponseAsync(DiscordInteractionResponseType.ChannelMessageWithSource,new DiscordInteractionResponseBuilder().WithContent("You do not have permission to do this."));
             return;
