@@ -25,7 +25,7 @@ public static class LoungeSetupUiModal
         var member = await eventArgs.Interaction.Guild.GetMemberAsync(eventArgs.Interaction.User.Id);
             
         //Check if User has Admin Permissions
-        if (!member.Permissions.HasPermission(DiscordPermissions.Administrator))
+        if (!member.Permissions.HasPermission(DiscordPermission.Administrator))
         {
             await eventArgs.Interaction.CreateResponseAsync(DiscordInteractionResponseType.UpdateMessage,UIMessageBuilders.NoPermissionsResponseBuilder);
             return;

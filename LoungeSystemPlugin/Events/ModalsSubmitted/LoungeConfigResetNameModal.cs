@@ -23,7 +23,7 @@ public static class LoungeConfigResetNameModal
         }
         
         var invokingMember = await eventArgs.Interaction.Guild.GetMemberAsync(eventArgs.Interaction.User.Id);
-        if (!invokingMember.Permissions.HasPermission(DiscordPermissions.Administrator))
+        if (!invokingMember.Permissions.HasPermission(DiscordPermission.Administrator))
         {
             await eventArgs.Interaction.CreateResponseAsync(DiscordInteractionResponseType.ChannelMessageWithSource,new DiscordInteractionResponseBuilder().WithContent("You do not have permission to do this."));
             return;
