@@ -115,21 +115,16 @@ public static class NewLoungeHelper
         var overWriteBuildersList = new List<DiscordOverwriteBuilder>
         {
             new DiscordOverwriteBuilder(discordMember)
-                .Allow(DiscordPermissions.AccessChannels)
-                .Allow(DiscordPermissions.UseVoice)
-                .Allow(DiscordPermissions.Speak)
-                .Allow(DiscordPermissions.SendMessages)
-                .Allow(DiscordPermissions.Stream)
-                .Allow(DiscordPermissions.PrioritySpeaker)
+                .Allow(DiscordPermission.ViewChannel)
+                .Allow(DiscordPermission.Connect)
+                .Allow(DiscordPermission.Speak)
+                .Allow(DiscordPermission.SendMessages)
+                .Allow(DiscordPermission.Stream)
+                .Allow(DiscordPermission.PrioritySpeaker)
         };
 
         var roleSpecificOverrides = await BuildOverwritesForRequiredRoles(guild.Id, originalChannel.Id);
         overWriteBuildersList.AddRange(roleSpecificOverrides);
-
-
-        /*var channelNamePattern =
-            await ChannelNameBuilder.BuildAsync(guild.Id, originalChannel.Id,
-                customNamePattern);*/
         
         var channelNamePattern = loungeNamePattern;
 
@@ -212,19 +207,26 @@ public static class NewLoungeHelper
             requiredRolesList.Add(new RequiredRoleRecord{RoleId = guild.EveryoneRole.Id});
         else
             overWriteBuildersList.Add(new DiscordOverwriteBuilder(guild.EveryoneRole)
-                .Deny(DiscordPermissions.AccessChannels)
-                .Deny(DiscordPermissions.SendMessages)
-                .Deny(DiscordPermissions.UseVoice)
-                .Deny(DiscordPermissions.Speak)
-                .Deny(DiscordPermissions.Stream));
-
-        overWriteBuildersList.AddRange(requiredRolesList.Select(requiredRole => guild.GetRole(requiredRole.RoleId))
-            .Select(discordRole => new DiscordOverwriteBuilder(discordRole!)
-                .Allow(DiscordPermissions.AccessChannels)
-                .Allow(DiscordPermissions.UseVoice)
-                .Allow(DiscordPermissions.Speak)
-                .Allow(DiscordPermissions.SendMessages)
-                .Allow(DiscordPermissions.Stream)));
+                .Deny(DiscordPermission.ViewChannel)
+                .Deny(DiscordPermission.SendMessages)
+                .Deny(DiscordPermission.Connect)
+                .Deny(DiscordPermission.Speak)
+                .Deny(DiscordPermission.Stream));
+        
+        foreach (var requiredRoleRecord in requiredRolesList)
+        {
+            var discordRole = await guild.GetRoleAsync(requiredRoleRecord.RoleId);
+            
+            if (ReferenceEquals(discordRole, null))
+                continue;
+            
+            overWriteBuildersList.Add(new DiscordOverwriteBuilder(discordRole)                
+                .Allow(DiscordPermission.ViewChannel)
+                .Allow(DiscordPermission.Connect)
+                .Allow(DiscordPermission.Speak)
+                .Allow(DiscordPermission.SendMessages)
+                .Allow(DiscordPermission.Stream));
+        }
 
         return overWriteBuildersList;
     }
