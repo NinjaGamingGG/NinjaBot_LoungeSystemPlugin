@@ -13,35 +13,35 @@ public static class UIMessageBuilders
         public static readonly DiscordMessageBuilder InitialMessageBuilder = new DiscordMessageBuilder()
             .WithContent(UiBaseMessageContent +
                      "Please select a Channel Users will enter in order to create a Lounge / Temporary VC")
-            .AddComponents([
-                new DiscordChannelSelectComponent(CustomComponentIdHelper.LoungeSetup.ChannelSelector, "Target Channel",[DiscordChannelType.Voice])]);
+            .AddActionRowComponent(
+                new DiscordChannelSelectComponent(CustomComponentIdHelper.LoungeSetup.ChannelSelector, "Target Channel",[DiscordChannelType.Voice]));
     
         public static readonly DiscordInteractionResponseBuilder ChannelSelectedMessageBuilder = new DiscordInteractionResponseBuilder()
             .WithContent(UiBaseMessageContent +
                      ":white_check_mark: Channel Selected\n:point_down: Please click the Button Below to Enter the new Channel Name Pattern that will be used for new Channels")
-            .AddComponents([
+            .AddActionRowComponent([
                 new DiscordButtonComponent(DiscordButtonStyle.Primary,CustomComponentIdHelper.LoungeSetup.NamePatternButton,"Set Name Pattern")]);
 
         public static readonly DiscordInteractionResponseBuilder ChannelNamePatternModalBuilder =
             new DiscordInteractionResponseBuilder()
                 .WithTitle("Set your Channel Name Pattern")
                 .WithCustomId(CustomComponentIdHelper.LoungeSetup.NamePatternModal)
-                .AddComponents(new DiscordTextInputComponent("Name Pattern",CustomComponentIdHelper.LoungeSetup.NamePatternModalNameComponent,"For example use {username}'s Lounge"))
-                .AddComponents(new DiscordTextInputComponent("Decorator",CustomComponentIdHelper.LoungeSetup.NamePatternModalDecoratorComponent,"Displayed before the Name. For Example use: ~🗿»"));
+                .AddTextInputComponent(new DiscordTextInputComponent("Name Pattern",CustomComponentIdHelper.LoungeSetup.NamePatternModalNameComponent,"For example use {username}'s Lounge"))
+                .AddTextInputComponent(new DiscordTextInputComponent("Decorator",CustomComponentIdHelper.LoungeSetup.NamePatternModalDecoratorComponent,"Displayed before the Name. For Example use: ~🗿»"));
         
         public static readonly DiscordInteractionResponseBuilder ChannelNamePatternRenameModalBuilder =
             new DiscordInteractionResponseBuilder()
                 .WithTitle("Set your Channel Name Pattern")
                 .WithCustomId(CustomComponentIdHelper.LoungeConfig.ResetPatternModal)
-                .AddComponents(new DiscordTextInputComponent("Name Pattern",CustomComponentIdHelper.LoungeConfig.ResetPatternModalNameComponent,"For example use {username}'s Lounge"))
-                .AddComponents(new DiscordTextInputComponent("Decorator",CustomComponentIdHelper.LoungeConfig.ResetPatternModalDecoratorComponent,"Displayed before the Name. For Example use: ~🗿»"));
+                .AddTextInputComponent(new DiscordTextInputComponent("Name Pattern",CustomComponentIdHelper.LoungeConfig.ResetPatternModalNameComponent,"For example use {username}'s Lounge"))
+                .AddTextInputComponent(new DiscordTextInputComponent("Decorator",CustomComponentIdHelper.LoungeConfig.ResetPatternModalDecoratorComponent,"Displayed before the Name. For Example use: ~🗿»"));
     
     
         public static readonly DiscordInteractionResponseBuilder ModalSubmittedResponseBuilder = 
             new DiscordInteractionResponseBuilder()
                 .WithContent(UiBaseMessageContent +
                          ":white_check_mark: Name Pattern Set\n:point_down: Please select below whether you want the Lounge Interface in a Separate Channel or in the Lounge's Chat")
-                .AddComponents(
+                .AddActionRowComponent(
                     new DiscordSelectComponent(CustomComponentIdHelper.LoungeSetup.InterfaceSelector, "Click to select" , new List<DiscordSelectComponentOption>()
                     {
                         new("Separate", CustomComponentIdHelper.LoungeSetup.InterfaceOptionSeparate),
@@ -52,8 +52,8 @@ public static class UIMessageBuilders
             new DiscordInteractionResponseBuilder()
                 .WithContent(UiBaseMessageContent +
                          ":white_check_mark: Separate Interface Selected\n:point_down: Please select below which Channel should be used for the interface")
-                .AddComponents([
-                    new DiscordChannelSelectComponent(CustomComponentIdHelper.LoungeSetup.InterfaceChannelSelector, "Interface Channel",[DiscordChannelType.Text])]);
+                .AddActionRowComponent(
+                    new DiscordChannelSelectComponent(CustomComponentIdHelper.LoungeSetup.InterfaceChannelSelector, "Interface Channel",[DiscordChannelType.Text]));
 
         public static readonly DiscordInteractionResponseBuilder LoungeSetupComplete =
             new DiscordInteractionResponseBuilder()
@@ -80,7 +80,7 @@ public static class UIMessageBuilders
 
         public static DiscordInteractionResponseBuilder LoungeConfigSelectedResponseBuilder(string channelMention, bool canResetInterface = false)
         {
-            List<DiscordComponent> components = [];
+            List<DiscordButtonComponent> components = [];
             
             if (canResetInterface)
                 components.Add(new DiscordButtonComponent(DiscordButtonStyle.Secondary, CustomComponentIdHelper.LoungeConfig.Reset, "Reset Interface", emoji: new DiscordComponentEmoji("\ud83d\udd03")));
@@ -92,6 +92,6 @@ public static class UIMessageBuilders
             //Reset Interface
             return new DiscordInteractionResponseBuilder()
                 .WithContent($"You selected the configuration for:\n{channelMention}")
-                .AddComponents(components);
+                .AddActionRowComponent(components);
         }
     }
