@@ -9,9 +9,10 @@ namespace LoungeSystemPlugin.PluginHelper.LoungeInterface;
 public static class InterfaceTargetHelper
 {
     public static async Task<DiscordChannel?> GetTargetDiscordChannelAsync(DiscordChannel interactedChannel, DiscordMember invokingUser)
-    {        
+    {
+        var userChannel = await invokingUser.VoiceState.GetChannelAsync();
         // ReSharper disable once ConditionalAccessQualifierIsNonNullableAccordingToAPIContract
-        if (ReferenceEquals(invokingUser.VoiceState?.Channel, null))
+        if (ReferenceEquals(userChannel, null))
         {
             return null;
         }
@@ -26,7 +27,7 @@ public static class InterfaceTargetHelper
             var configurationRecords = await mySqlConnection.QueryAsync("SELECT * FROM LoungeSystem.LoungeSystemConfigurationIndex WHERE InterfaceChannelId = @Id", new { interactedChannel.Id }, commandType: CommandType.Text);
 
             if (configurationRecords.Any())
-                return invokingUser.VoiceState.Channel;
+                return userChannel;
         }
         catch (MySqlException ex)
         {
