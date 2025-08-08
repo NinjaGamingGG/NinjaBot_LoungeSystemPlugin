@@ -148,7 +148,7 @@ public static class AdminLoungeSystemCommandsGroup
         await context.RespondAsync(new DiscordMessageBuilder()
             .WithContent("I found the following configurations for this Guild:")
             .AddEmbeds(embedList)
-            .AddComponents(new DiscordSelectComponent(CustomComponentIdHelper.LoungeConfig.EntrySelector, "Select a channel here for more options", selectComponentOptions, maxOptions: 1)));
+            .AddActionRowComponent(new DiscordSelectComponent(CustomComponentIdHelper.LoungeConfig.EntrySelector, "Select a channel here for more options", selectComponentOptions, maxOptions: 1)));
 
     }
 }
