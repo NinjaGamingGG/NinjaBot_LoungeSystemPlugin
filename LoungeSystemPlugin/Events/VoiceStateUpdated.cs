@@ -12,10 +12,19 @@ public static class VoiceStateUpdated
 {
     public static async Task ChannelEnter(DiscordClient client, VoiceStateUpdatedEventArgs eventArgs)
     {
-        if (ReferenceEquals(eventArgs.Channel, null))
+        var enteredChannel = await eventArgs.After.GetChannelAsync();
+        if (ReferenceEquals(enteredChannel, null))
             return;
 
-        await NewLoungeHelper.CreateNewLounge(eventArgs.Guild, eventArgs.Channel, eventArgs.User);
+        var eventGuild = await eventArgs.GetGuildAsync();
+        if (ReferenceEquals(eventGuild, null))
+            return;
+        
+        var eventUser = await eventArgs.GetUserAsync();
+        if (ReferenceEquals(eventUser, null))
+            return;
+        
+        await NewLoungeHelper.CreateNewLounge(eventGuild, enteredChannel, eventUser);
     }
 
     public static async Task ChannelLeave(DiscordClient client, VoiceStateUpdatedEventArgs eventArgs)
@@ -44,13 +53,14 @@ public static class VoiceStateUpdated
         
         foreach (var loungeDbModel in loungeList)
         {
-            if (ReferenceEquals(eventArgs.Before.Channel,null))
+            var leftChannel = await eventArgs.Before.GetChannelAsync();
+            if (ReferenceEquals(leftChannel,null))
                 return;
             
-            if (loungeDbModel.ChannelId != eventArgs.Before.Channel.Id)
+            if (loungeDbModel.ChannelId != leftChannel.Id)
                 continue;
             
-            if (eventArgs.Before.Channel.Users.Count != 0)
+            if (leftChannel.Users.Count != 0)
                 return;
             
             await CleanupLounge.Execute(loungeDbModel);
