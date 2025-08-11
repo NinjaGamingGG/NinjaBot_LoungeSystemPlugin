@@ -49,7 +49,7 @@ public static class LoungeUnTrustUserButton
         
         var dropdown = new DiscordSelectComponent(CustomComponentIdHelper.LoungeInterface.UnTrustSelectComponentId, "Please select an user", sortedList);
 
-        var followUpMessageBuilder = new DiscordFollowupMessageBuilder().WithContent("Please select an user below").AddComponents(dropdown);
+        var followUpMessageBuilder = new DiscordFollowupMessageBuilder().WithContent("Please select an user below").AddActionRowComponent(dropdown);
 
         await ThrowAwayFollowupMessage.HandleAsync(followUpMessageBuilder, eventArgs.Interaction);
     }
@@ -90,7 +90,7 @@ public static class LoungeUnTrustUserButton
 
             if (existingOverwrite.Type == DiscordOverwriteType.Role)
             {
-                var role = eventArgs.Guild.GetRole(existingOverwrite.Id);
+                var role = await eventArgs.Guild.GetRoleAsync(existingOverwrite.Id);
 
                 if (ReferenceEquals(role, null))
                 {
@@ -99,13 +99,17 @@ public static class LoungeUnTrustUserButton
                 }
                     
                 
-                overwriteBuilderList.Add(await new DiscordOverwriteBuilder(role).FromAsync(existingOverwrite));
+                overwriteBuilderList.Add( new DiscordOverwriteBuilder(role)
+                    .Allow(existingOverwrite.Allowed)
+                    .Deny(existingOverwrite.Denied));
             }
             else
             {
                 var user = await eventArgs.Guild.GetMemberAsync(existingOverwrite.Id);
                 
-                overwriteBuilderList.Add(await new DiscordOverwriteBuilder(user).FromAsync(existingOverwrite));
+                overwriteBuilderList.Add(new DiscordOverwriteBuilder(user)
+                    .Allow(existingOverwrite.Allowed)
+                    .Deny(existingOverwrite.Denied));
             }
         }
         

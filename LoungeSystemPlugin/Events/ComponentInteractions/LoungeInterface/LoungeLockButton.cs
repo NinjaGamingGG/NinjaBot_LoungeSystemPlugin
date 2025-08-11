@@ -108,18 +108,31 @@ public static class LoungeLockButton
                 continue;
             
             var overwriteMember = await overwrite.GetMemberAsync();
-            overwriteBuilderList.Add(await new DiscordOverwriteBuilder(overwriteMember).FromAsync(overwrite));
+            overwriteBuilderList.Add(new DiscordOverwriteBuilder(overwriteMember)
+                .Allow(overwrite.Allowed)
+                .Deny(overwrite.Denied));
         }
         
         if (requiresRolesList.Count == 0)
             requiresRolesList.Add(eventArgs.Guild.EveryoneRole.Id);
+        
+        foreach (var roleId in requiresRolesList)
+        {
+            var role = await eventArgs.Guild.GetRoleAsync(roleId);
 
-        overwriteBuilderList.AddRange(requiresRolesList.Select(requiredRole => eventArgs.Guild.GetRole(requiredRole))
-            .Select(role => new DiscordOverwriteBuilder(role!).Allow(DiscordPermissions.AccessChannels)
-                .Deny(DiscordPermissions.SendMessages)
-                .Deny(DiscordPermissions.UseVoice)
-                .Deny(DiscordPermissions.Speak)
-                .Deny(DiscordPermissions.Stream)));
+            if (ReferenceEquals(role, null))
+            {
+                Log.Error("Unable to find role {roleId}", roleId);
+                continue;
+            }
+            
+            overwriteBuilderList.Add(new DiscordOverwriteBuilder(role)
+                .Allow(DiscordPermission.ViewChannel)
+                .Deny(DiscordPermission.SendMessages)
+                .Deny(DiscordPermission.Connect)
+                .Deny(DiscordPermission.Speak)
+                .Deny(DiscordPermission.Stream));
+        }
         
         await targetChannel.ModifyAsync(x => x.PermissionOverwrites = overwriteBuilderList);
 
@@ -162,7 +175,9 @@ public static class LoungeLockButton
                 continue;
             
             var overwriteMember = await overwrite.GetMemberAsync();
-            overwriteBuilderList.Add(await new DiscordOverwriteBuilder(overwriteMember).FromAsync(overwrite));
+            overwriteBuilderList.Add( new DiscordOverwriteBuilder(overwriteMember)
+                .Allow(overwrite.Allowed)
+                .Deny(overwrite.Denied));
         }
         
         var connectionString = LoungeSystemPlugin.MySqlConnectionHelper.GetMySqlConnectionString();
@@ -191,18 +206,30 @@ public static class LoungeLockButton
             requiresRolesList.Add(eventArgs.Guild.EveryoneRole.Id);
         else
             overwriteBuilderList.Add(new DiscordOverwriteBuilder(eventArgs.Guild.EveryoneRole)
-                .Deny(DiscordPermissions.AccessChannels)
-                .Deny(DiscordPermissions.SendMessages)
-                .Deny(DiscordPermissions.UseVoice)
-                .Deny(DiscordPermissions.Speak)
-                .Deny(DiscordPermissions.Stream));
+                .Deny(DiscordPermission.ViewChannel)
+                .Deny(DiscordPermission.SendMessages)
+                .Deny(DiscordPermission.Connect)
+                .Deny(DiscordPermission.Speak)
+                .Deny(DiscordPermission.Stream));
+        
+        foreach (var roleId in requiresRolesList)
+        {
+            var role = await eventArgs.Guild.GetRoleAsync(roleId);
 
-        overwriteBuilderList.AddRange(requiresRolesList.Select(requiredRole => eventArgs.Guild.GetRole(requiredRole))
-            .Select(role => new DiscordOverwriteBuilder(role!).Allow(DiscordPermissions.AccessChannels)
-                .Allow(DiscordPermissions.SendMessages)
-                .Allow(DiscordPermissions.UseVoice)
-                .Allow(DiscordPermissions.Speak)
-                .Allow(DiscordPermissions.Stream)));
+            if (ReferenceEquals(role, null))
+            {
+                Log.Error("Unable to find role {roleId}", roleId);
+                continue;
+            }
+            
+            overwriteBuilderList.Add(new DiscordOverwriteBuilder(role)
+                .Allow(DiscordPermission.ViewChannel)
+                .Allow(DiscordPermission.SendMessages)
+                .Allow(DiscordPermission.Connect)
+                .Allow(DiscordPermission.Speak)
+                .Allow(DiscordPermission.Stream)
+            );
+        }
 
         await targetChannel.ModifyAsync(x => x.PermissionOverwrites = overwriteBuilderList);
 
