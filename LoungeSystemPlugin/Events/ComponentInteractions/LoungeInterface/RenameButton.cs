@@ -25,7 +25,7 @@ public static class RenameButton
 
         var modal = new DiscordInteractionResponseBuilder();
         
-        modal.WithTitle("Rename your Lounge").WithCustomId(CustomComponentIdHelper.LoungeRenameModalId).AddComponents(new DiscordTextInputComponent("New Lounge Name", CustomComponentIdHelper.LoungeRenameModalNewName, required: true, min_length: 4, max_length: 12));
+        modal.WithTitle("Rename your Lounge").WithCustomId(CustomComponentIdHelper.LoungeRenameModalId).AddTextInputComponent(new DiscordTextInputComponent("New Lounge Name", CustomComponentIdHelper.LoungeRenameModalNewName, required: true, min_length: 4, max_length: 12));
 
         await eventArgs.Interaction.CreateResponseAsync(DiscordInteractionResponseType.Modal, modal);
     }
