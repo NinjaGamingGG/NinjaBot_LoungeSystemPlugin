@@ -46,7 +46,7 @@ public static class LoungeResizeButton
         
         var dropdown = new DiscordSelectComponent(CustomComponentIdHelper.LoungeInterface.ResizeDropdownId, "Select a new Size Below", optionsList);
 
-        var followUpMessageBuilder = new DiscordFollowupMessageBuilder().WithContent("Select a new Size Below").AddComponents(dropdown);
+        var followUpMessageBuilder = new DiscordFollowupMessageBuilder().WithContent("Select a new Size Below").AddActionRowComponent(dropdown);
 
         await ThrowAwayFollowupMessage.HandleAsync(followUpMessageBuilder, eventArgs.Interaction);
 
