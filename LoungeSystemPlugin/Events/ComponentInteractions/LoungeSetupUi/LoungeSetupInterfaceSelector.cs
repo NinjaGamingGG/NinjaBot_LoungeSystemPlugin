@@ -44,12 +44,12 @@ public static class LoungeSetupInterfaceSelector
             //Handle the value of the Selection
             switch (selection)
             {
-                case ("separate_interface"):
+                case (CustomComponentIdHelper.LoungeSetup.InterfaceOptionSeparate):
                     await eventArgs.Interaction.CreateResponseAsync(DiscordInteractionResponseType.UpdateMessage,
                         UIMessageBuilders.InterfaceSelectedResponseBuilder);
                     break;
             
-                case ("internal_interface"):
+                case (CustomComponentIdHelper.LoungeSetup.InterfaceOptionInternal):
                     await eventArgs.Interaction.CreateResponseAsync(DiscordInteractionResponseType.UpdateMessage,
                         UIMessageBuilders.LoungeSetupComplete);
                     await LoungeSetupUiHelper.CompleteSetup(deserializedRecord, eventArgs.Guild.Id);
