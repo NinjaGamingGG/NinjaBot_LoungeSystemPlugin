@@ -54,6 +54,8 @@
         
         <Copy SourceFiles="plugin.xml" 
                 DestinationFolder="$(LoungeSystemDir)"/>
+        <Copy SourceFiles="config.json"
+              DestinationFolder="$(LoungeSystemDir)"/>
     </Target>
 
 </Project>
