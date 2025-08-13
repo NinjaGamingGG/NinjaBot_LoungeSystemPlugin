@@ -53,9 +53,12 @@
               SkipUnchangedFiles="true" />
         
         <Copy SourceFiles="plugin.xml" 
-                DestinationFolder="$(LoungeSystemDir)"/>
+                DestinationFolder="$(LoungeSystemDir)"
+              Condition="!Exists('$(LoungeSystemDir)/plugin.xml')"/>
+        
         <Copy SourceFiles="config.json"
-              DestinationFolder="$(LoungeSystemDir)"/>
+              DestinationFolder="$(LoungeSystemDir)"
+              Condition="!Exists('$(LoungeSystemDir)/config.json')"/>
     </Target>
 
 </Project>
