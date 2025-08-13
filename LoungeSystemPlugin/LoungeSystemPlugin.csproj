@@ -31,8 +31,29 @@
       </Reference>
     </ItemGroup>
 
-    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-      <Exec Command="copy &quot;$(TargetDir)$(AssemblyName)$(TargetExt)&quot; &quot;$(ProjectDir)..\NinjaBot-DC\plugins&quot;  &#xA;mkdir &quot;$(ProjectDir)..\NinjaBot-DC\plugins\$(ProjectName)&quot;&#xA;copy &quot;$(ProjectDir)\config.json&quot; &quot;$(ProjectDir)..\NinjaBot-DC\plugins\$(ProjectName)\&quot;&#xA;copy &quot;$(ProjectDir)\plugin.xml&quot; &quot;$(ProjectDir)..\NinjaBot-DC\plugins\$(ProjectName)\&quot;" />
+    <Target Name="PostBuildCopyPlugin" AfterTargets="Build" Condition="'$(Configuration)' == 'Debug'">
+        <PropertyGroup>
+            <!-- Zielordner relativ zum Projektordner -->
+            <PluginOutputDir>$(HOME)/RiderProjects/Dev Bot/plugins</PluginOutputDir>
+            <LoungeSystemDir>$(PluginOutputDir)/LoungeSystemPlugin</LoungeSystemDir>
+        </PropertyGroup>
+
+        <!-- Zu kopierende Datei: das erzeugte Plugin-DLL -->
+        <ItemGroup>
+            <PluginAssembly Include="$(TargetPath)" />
+        </ItemGroup>
+
+        <!-- Zielverzeichnis ggf. anlegen -->
+        <MakeDir Directories="$(PluginOutputDir)" />
+        <MakeDir Directories="$(LoungeSystemDir)" />
+
+        <!-- Datei kopieren -->
+        <Copy SourceFiles="@(PluginAssembly)"
+              DestinationFolder="$(PluginOutputDir)"
+              SkipUnchangedFiles="true" />
+        
+        <Copy SourceFiles="plugin.xml" 
+                DestinationFolder="$(LoungeSystemDir)"/>
     </Target>
 
 </Project>
