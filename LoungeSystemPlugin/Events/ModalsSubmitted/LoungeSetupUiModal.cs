@@ -48,8 +48,8 @@ public static class LoungeSetupUiModal
             if (deserializedRecord is null)
                 return;
 
-            eventArgs.Values.TryGetValue("lounge_setup_name-pattern_modal_name", out var namePatternString);
-            eventArgs.Values.TryGetValue("lounge_setup_name-pattern_modal_decorator", out var nameDecoratorString);
+            eventArgs.Values.TryGetValue(PluginHelper.CustomComponentIdHelper.LoungeSetup.NamePatternModalNameComponent, out var namePatternString);
+            eventArgs.Values.TryGetValue(PluginHelper.CustomComponentIdHelper.LoungeSetup.NamePatternModalDecoratorComponent, out var nameDecoratorString);
             
             if (namePatternString is null || nameDecoratorString is null)
                 return;
