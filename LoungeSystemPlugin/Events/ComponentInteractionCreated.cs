@@ -115,7 +115,6 @@ public static class ComponentInteractionCreated
             
             default:
                 Log.Debug("[{PluginName}] Unknown Component Id: {ComponentId} in ComponentInteractionCreatedEvent",LoungeSystemPlugin.GetStaticPluginName,eventArgs.Interaction.Data.CustomId);
-                await eventArgs.Interaction.CreateResponseAsync(DiscordInteractionResponseType.DeferredMessageUpdate);
                 return;
         }
     }
